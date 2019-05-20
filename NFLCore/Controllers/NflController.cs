@@ -151,11 +151,11 @@ namespace NFLCore.Controllers
         }
 
         // Get teams ordered by location or name
-        [HttpGet("teams")]
-        public List<Team> GetOrderedTeams([FromQuery(Name = "Name")]string orderBy)
-        {
+        //[HttpGet("teams")]
+        //public List<Team> GetOrderedTeams([FromQuery(Name = "Name")]string orderBy)
+        //{
             
-        }
+        //}
 
         // POST api/<controller>
         [HttpPost]
