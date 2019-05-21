@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NFLCore.Data;
 using NFLCore.Models;
 
@@ -19,7 +20,7 @@ namespace NFLCore.Controllers
         {
             _context = context;
 
-            if (_context.Players.Count() == 0 && _context.Teams.Count() == 0 && _context.Teams.Count() <= 8)
+            if (_context.Players.Count() == 0 && _context.Teams.Count() == 0 && _context.Teams.Count() <=15)
             {
                 _context.Players.Add(new Player { Id = 1, FirstName = "Tom", LastName = "Brady"});
                 _context.Players.Add(new Player { Id = 2, FirstName = "Larry", LastName = "FitzGerald"});
@@ -36,6 +37,7 @@ namespace NFLCore.Controllers
                 _context.Teams.Add(new Team { Id = 6, Name = "San Francisco 49ers", Location = "Santa Clara, CA" });
                 _context.Teams.Add(new Team { Id = 7, Name = "Los Angeles Rams", Location = "Los Angeles, CA" });
                 _context.SaveChanges();
+                _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             }
         }
 
@@ -80,6 +82,22 @@ namespace NFLCore.Controllers
         }
 
         // Post for Create a team
+        [HttpPost]
+        public IActionResult CreateTeam([FromBody]Team team)
+        {
+            //_context.Teams.Add(team);
+            //await _context.SaveChangesAsync();
+
+            //return CreatedAtAction(nameof(GetTeamsById), new {id = team.Id}, team);
+
+            if (ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _context.Teams.Add(team);
+            _context.SaveChanges();
+            return Ok();
+        }
 
         // Post for Create a player
 
