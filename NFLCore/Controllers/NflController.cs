@@ -75,11 +75,11 @@ namespace NFLCore.Controllers
         }
 
         // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // Post for Create a team
         [HttpPost]
@@ -100,9 +100,17 @@ namespace NFLCore.Controllers
         }
 
         // Post for Create a player
+        [HttpPost]
+        public async Task<ActionResult<Player>>CreatePlayer([FromBody]Player player)
+        {
+            _context.Players.Add(player);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetPlayersById), new {id = player.Id}, player);
+        }
 
         // Query Player by Id
-        [HttpGet("players/{id}")]
+        //[HttpGet("players/{id}")]
+        [HttpGet]
         public async Task<ActionResult<Player>> GetPlayersById(int id)
         {
             var player = await _context.Players.FindAsync(id);
@@ -116,6 +124,7 @@ namespace NFLCore.Controllers
         }
 
         // Get All players
+        //[HttpGet("players")]
         [HttpGet("players")]
         public List<Player> GetAllPlayers()
         {
